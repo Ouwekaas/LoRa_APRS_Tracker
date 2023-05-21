@@ -13,6 +13,8 @@
 #include "pins.h"
 #include "power_management.h"
 
+#include "math.h"
+
 #define VERSION "22.19.0"
 
 logging::Logger logger;
@@ -32,6 +34,9 @@ void setup_lora();
 
 String create_lat_aprs(RawDegrees lat);
 String create_long_aprs(RawDegrees lng);
+String create_compressed_lat_aprs(double compLat);
+String create_compressed_long_aprs(double compLng);
+String create_compressed_course_speed(double degrees, double knots);
 //String create_lat_aprs_dao(RawDegrees lat);
 //String create_long_aprs_dao(RawDegrees lng);
 //String create_dao_aprs(RawDegrees lat, RawDegrees lng);
@@ -227,6 +232,9 @@ void loop() {
     APRSMessage msg;
     String      lat;
     String      lng;
+    String      compLat;
+    String      compLng;
+    String      compCS;
    // String      dao;
 
     msg.setSource(BeaconMan.getCurrentBeaconConfig()->callsign);
@@ -243,8 +251,17 @@ void loop() {
       dao = create_dao_aprs(gps.location.rawLat(), gps.location.rawLng());
     }
 */
+// Added these rules from former if statement, these are needed.
     lat = create_lat_aprs(gps.location.rawLat());
     lng = create_long_aprs(gps.location.rawLng());
+    
+    // If we have compressed data we need some extra calculations
+    if(BeaconMan.getCurrentBeaconConfig()->compressed_data) {
+      compLat = create_compressed_lat_aprs(gps.location.lat());
+      compLng = create_compressed_long_aprs(gps.location.lng());
+      compCS = create_compressed_course_speed(gps.course.deg(), gps.speed.knots());
+    }
+
 
     String alt     = "";
     int    alt_int = max(-99999, min(999999, (int)gps.altitude.feet()));
@@ -281,8 +298,22 @@ void loop() {
     }
 
     String aprsmsg;
-
-    aprsmsg = "!" + lat + BeaconMan.getCurrentBeaconConfig()->overlay + lng + BeaconMan.getCurrentBeaconConfig()->symbol + course_and_speed; // + alt;  
+    // Altitude, not needed for ground troops, near future add as an option.
+    if (BeaconMan.getCurrentBeaconConfig()->compressed_data) {
+      /* ! / 3[!Q O1Gy O !! Y
+       * ! Data Type; Position without timestamp (no APRS messaging), or Ultimeter 2000 WX Station
+       * / Table Identifier
+       * 3[!Q Compressed Latitude
+       * O1Gy Compressed Longitude
+       * O Symbol Code
+       * !! Compressed Course/Speed
+       * Y Compression Type, 00110000 options selected -> 00 not used, 1 curent fix, 11 NMEA Source RMC, 010 Software
+       */
+      aprsmsg = "!" + BeaconMan.getCurrentBeaconConfig()->overlay + compLat + compLng + BeaconMan.getCurrentBeaconConfig()->symbol + compCS + "[";
+       
+    } else {
+      aprsmsg = "!" + lat + BeaconMan.getCurrentBeaconConfig()->overlay + lng + BeaconMan.getCurrentBeaconConfig()->symbol + course_and_speed; 
+    }
     // message_text every 10's packet (i.e. if we have beacon rate 1min at high
     // speed -> every 10min). May be enforced above (at expirey of smart beacon
     // rate (i.e. every 30min), or every third packet on static rate (i.e.
@@ -452,10 +483,35 @@ String create_lat_aprs(RawDegrees lat) {
   // we like sprintf's float up-rounding.
   // but sprintf % may round to 60.00 -> 5360.00 (53° 60min is a wrong notation
   // ;)
+  
   sprintf(str, "%02d%s%c", lat.deg, s_min_nn(lat.billionths, 0), n_s);
   String lat_str(str);
   return lat_str;
 }
+
+String create_compressed_lat_aprs(double compLat){
+ 
+  String result = "";
+  long calcLat = 380926 * (90-compLat);
+  
+ // 91^3 = 753571
+  int  dlat1 = calcLat / 753571;
+  long iTemp = calcLat%753571;
+
+  // 91^2 = 8281
+  int  dlat2 = iTemp / 8281;
+       iTemp = calcLat%8281;
+
+  // 91^1 = 91
+  int  dlat3 = iTemp / 91;
+  int  dlat4 = calcLat%91;
+
+  result += char(dlat1 + 33);
+  result += char(dlat2 + 33);
+  result += char(dlat3 + 33);
+  result += char(dlat4 + 33);
+  return result;
+}                                                                                            
 
 /*
 String create_lat_aprs_dao(RawDegrees lat) {
@@ -486,6 +542,30 @@ String create_long_aprs(RawDegrees lng) {
   return lng_str;
 }
 
+String create_compressed_long_aprs(double compLng) {
+  String result = "";
+  long calclng = 190463 * (180+compLng);
+
+  // 91^3 = 753571
+  int  dlng1 = calclng / 753571;
+  long iTemp = calclng%753571;
+
+  // 91^2 = 8281
+  int  dlng2 = iTemp / 8281;
+       iTemp = calclng%8281;
+
+  // 91^1 = 91
+  int  dlng3 = iTemp / 91;
+  int  dlng4 = calclng%91;
+
+  result += char(dlng1 + 33);
+  result += char(dlng2 + 33);
+  result += char(dlng3 + 33);
+  result += char(dlng4 + 33);
+  Serial.println("Result: "+ result);
+  return result;
+}
+
 /*
 String create_long_aprs_dao(RawDegrees lng) {
   // round to 4 digits and cut the last 2
@@ -514,6 +594,23 @@ String create_dao_aprs(RawDegrees lat, RawDegrees lng) {
   return dao_str;
 }
 */
+
+String create_compressed_course_speed(double degrees, double knots) {
+  String result = "";
+  //Calculate degrees
+  int resultDegrees = degrees / 4;
+
+  //Calculate knots
+  double base = 1.08;
+  double calcKnots = knots + 1;
+  double resultDoubleKnots = log(calcKnots) / log(base);
+  int resultKnots = round(resultDoubleKnots);
+  
+  result += char(resultDegrees + 33);
+  result += char(resultKnots   + 33);
+
+  return result;
+};
 
 String createDateString(time_t t) {
   return String(padding(day(t), 2) + "." + padding(month(t), 2) + "." + padding(year(t), 4));

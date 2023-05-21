@@ -11,7 +11,7 @@ Given the user the posiblity to go to 30 bytes of payload:
 N0CALL-9>APLT00:!/3[!QO1GyO!!Q
 
 Save you 72% transmition time. That is on SF12 less then ~1.2 seconds instead of ~4,5 seconds.
-At Spreadfactor 12 at a bandwidth of 125kBps is ~1.2 seconds instead of ~4,5 seconds airtime. This is hughe! 
+At Spreadfactor 12 at a bandwidth of 125kHz is ~1.2 seconds instead of ~4,5 seconds airtime. This is hughe! 
 
 Secondary goals:
 a. Updating the libraries and test them
