@@ -2,11 +2,11 @@
 	"debug": false,
 	"beacons": [
 		{
-			"callsign": "N0CALL-9",
+			"callsign": "N0CALL-10",
 			"path": "",
 			"message": "",
 			"timeout": 1,
-			"symbol": ";",
+			"symbol": "[",
 			"overlay": "/",
 			"smart_beacon": {
 				"active": true,
@@ -18,7 +18,7 @@
 				"min_tx_dist": 100,
 				"min_bcn": 5
 			},
-			"enhance_precision": false
+			"compressed_data": true
 		}
 	],
 	"button": {

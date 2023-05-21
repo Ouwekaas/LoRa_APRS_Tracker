@@ -63,7 +63,8 @@ Configuration ConfigurationManagement::readConfiguration() {
     beacon.smart_beacon.min_tx_dist = v["smart_beacon"]["min_tx_dist"] | 100;
     beacon.smart_beacon.min_bcn     = v["smart_beacon"]["min_bcn"] | 5;
 
-    beacon.enhance_precision = v["enhance_precision"] | false;
+    beacon.compressed_data = v["compressed_data"] | false;
+   // beacon.enhance_precision = v["enhance_precision"] | false;
 
     conf.beacons.push_back(beacon);
   }
@@ -115,7 +116,8 @@ void ConfigurationManagement::writeConfiguration(Configuration conf) {
     v["smart_beacon"]["min_tx_dist"] = beacon.smart_beacon.min_tx_dist;
     v["smart_beacon"]["min_bcn"]     = beacon.smart_beacon.min_bcn;
 
-    v["enhance_precision"] = beacon.enhance_precision;
+    v["compressed_data"] = beacon.compressed_data;
+   // v["enhance_precision"] = beacon.enhance_precision;
   }
 
   data["debug"] = conf.debug;

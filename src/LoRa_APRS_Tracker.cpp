@@ -32,9 +32,9 @@ void setup_lora();
 
 String create_lat_aprs(RawDegrees lat);
 String create_long_aprs(RawDegrees lng);
-String create_lat_aprs_dao(RawDegrees lat);
-String create_long_aprs_dao(RawDegrees lng);
-String create_dao_aprs(RawDegrees lat, RawDegrees lng);
+//String create_lat_aprs_dao(RawDegrees lat);
+//String create_long_aprs_dao(RawDegrees lng);
+//String create_dao_aprs(RawDegrees lat, RawDegrees lng);
 String createDateString(time_t t);
 String createTimeString(time_t t);
 String getSmartBeaconState();
@@ -227,12 +227,13 @@ void loop() {
     APRSMessage msg;
     String      lat;
     String      lng;
-    String      dao;
+   // String      dao;
 
     msg.setSource(BeaconMan.getCurrentBeaconConfig()->callsign);
     msg.setPath(BeaconMan.getCurrentBeaconConfig()->path);
     msg.setDestination("APLT00");
 
+/*  No enhance precision anymore
     if (!BeaconMan.getCurrentBeaconConfig()->enhance_precision) {
       lat = create_lat_aprs(gps.location.rawLat());
       lng = create_long_aprs(gps.location.rawLng());
@@ -241,6 +242,9 @@ void loop() {
       lng = create_long_aprs_dao(gps.location.rawLng());
       dao = create_dao_aprs(gps.location.rawLat(), gps.location.rawLng());
     }
+*/
+    lat = create_lat_aprs(gps.location.rawLat());
+    lng = create_long_aprs(gps.location.rawLng());
 
     String alt     = "";
     int    alt_int = max(-99999, min(999999, (int)gps.altitude.feet()));
@@ -277,7 +281,8 @@ void loop() {
     }
 
     String aprsmsg;
-    aprsmsg = "!" + lat + BeaconMan.getCurrentBeaconConfig()->overlay + lng + BeaconMan.getCurrentBeaconConfig()->symbol + course_and_speed + alt;
+
+    aprsmsg = "!" + lat + BeaconMan.getCurrentBeaconConfig()->overlay + lng + BeaconMan.getCurrentBeaconConfig()->symbol + course_and_speed; // + alt;  
     // message_text every 10's packet (i.e. if we have beacon rate 1min at high
     // speed -> every 10min). May be enforced above (at expirey of smart beacon
     // rate (i.e. every 30min), or every third packet on static rate (i.e.
@@ -285,14 +290,17 @@ void loop() {
     if (!(rate_limit_message_text++ % 10)) {
       aprsmsg += BeaconMan.getCurrentBeaconConfig()->message;
     }
-    if (BatteryIsConnected) {
-      aprsmsg += " -  _Bat.: " + batteryVoltage + "V - Cur.: " + batteryChargeCurrent + "mA";
-    }
 
+    //TODO make it possible later for some enthousiatic bandwidth users
+    //if (BatteryIsConnected) {
+    //  aprsmsg += " -  _Bat.: " + batteryVoltage + "V - Cur.: " + batteryChargeCurrent + "mA";
+    //}
+
+/*  No enhance precision
     if (BeaconMan.getCurrentBeaconConfig()->enhance_precision) {
       aprsmsg += " " + dao;
     }
-
+*/
     msg.getBody()->setData(aprsmsg);
     String data = msg.encode();
     logger.log(logging::LoggerLevel::LOGGER_LEVEL_DEBUG, "Loop", "%s", data.c_str());
@@ -449,6 +457,7 @@ String create_lat_aprs(RawDegrees lat) {
   return lat_str;
 }
 
+/*
 String create_lat_aprs_dao(RawDegrees lat) {
   // round to 4 digits and cut the last 2
   char str[20];
@@ -459,10 +468,12 @@ String create_lat_aprs_dao(RawDegrees lat) {
   // we need sprintf's float up-rounding. Must be the same principle as in
   // aprs_dao(). We cut off the string to two decimals afterwards. but sprintf %
   // may round to 60.0000 -> 5360.0000 (53° 60min is a wrong notation ;)
-  sprintf(str, "%02d%s%c", lat.deg, s_min_nn(lat.billionths, 1 /* high precision */), n_s);
+  sprintf(str, "%02d%s%c", lat.deg, s_min_nn(lat.billionths, 1), n_s);
   String lat_str(str);
   return lat_str;
 }
+*/
+
 
 String create_long_aprs(RawDegrees lng) {
   char str[20];
@@ -475,6 +486,7 @@ String create_long_aprs(RawDegrees lng) {
   return lng_str;
 }
 
+/*
 String create_long_aprs_dao(RawDegrees lng) {
   // round to 4 digits and cut the last 2
   char str[20];
@@ -482,10 +494,11 @@ String create_long_aprs_dao(RawDegrees lng) {
   if (lng.negative) {
     e_w = 'W';
   }
-  sprintf(str, "%03d%s%c", lng.deg, s_min_nn(lng.billionths, 1 /* high precision */), e_w);
+  sprintf(str, "%03d%s%c", lng.deg, s_min_nn(lng.billionths, 1), e_w);
   String lng_str(str);
   return lng_str;
 }
+
 
 String create_dao_aprs(RawDegrees lat, RawDegrees lng) {
   // !DAO! extension, use Base91 format for best precision
@@ -500,6 +513,7 @@ String create_dao_aprs(RawDegrees lat, RawDegrees lng) {
   String dao_str(str);
   return dao_str;
 }
+*/
 
 String createDateString(time_t t) {
   return String(padding(day(t), 2) + "." + padding(month(t), 2) + "." + padding(year(t), 4));
