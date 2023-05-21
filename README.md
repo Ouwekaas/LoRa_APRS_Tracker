@@ -1,5 +1,30 @@
 # LoRa APRS Tracker
 
+This is a forked project, I want to experment a lot.
+
+Main goal: Shorten the data which is send out, currently is send a lot of data which take way to long in my opinium. SF12 is not meant to carry so much data.
+
+I want to go from the default 108 bytes like this:
+N0CALL-9>APLT00,WIDE1-1:!5633.47N/01503.44E[360/000/A=-00172LoRa Tracker -  _Bat.: 4.19V - Cur.: 395mA !wiT!
+
+Given the user the posiblity to go to 30 bytes of payload:
+N0CALL-9>APLT00:!/3[!QO1GyO!!Q
+
+Save you 72% transmition time. That is on SF12 less then ~1.2 seconds instead of ~4,5 seconds.
+At Spreadfactor 12 at a bandwidth of 125kBps is ~1.2 seconds instead of ~4,5 seconds airtime. This is hughe! 
+
+Secondary goals:
+a. Updating the libraries and test them
+b. Some other features in the LCD screen, like QRA locator or coordinates, whould be choice, speed and direction as well.
+
+Please do not help with this project yet until I am finished and followed some courses how to react in a GitHub environment. You could enlighten me, PM me.
+
+Vy Michel pe1pts.
+
+
+Here below the original text of the creator;
+
+
 The LoRa APRS Tracker will work with very cheep hardware which you can buy from amazon, ebay or aliexpress.
 Try it out and be part of the APRS network.
 
