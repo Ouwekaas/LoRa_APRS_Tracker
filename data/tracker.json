@@ -18,7 +18,9 @@
 				"min_tx_dist": 100,
 				"min_bcn": 5
 			},
-			"compressed_data": true
+			"compressed_data": true,
+			"battery_voltage": false,
+			"battery_current": false
 		}
 	],
 	"button": {

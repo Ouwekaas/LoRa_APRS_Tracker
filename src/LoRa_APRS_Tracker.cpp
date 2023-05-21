@@ -241,7 +241,7 @@ void loop() {
 
     msg.setSource(BeaconMan.getCurrentBeaconConfig()->callsign);
     msg.setPath(BeaconMan.getCurrentBeaconConfig()->path);
-    msg.setDestination("APLT00");
+    msg.setDestination("APLT01");
 
 /*  No enhance precision anymore
     if (!BeaconMan.getCurrentBeaconConfig()->enhance_precision) {
@@ -302,14 +302,14 @@ void loop() {
     String aprsmsg;
     // Altitude, not needed for ground troops, near future add as an option.
     if (BeaconMan.getCurrentBeaconConfig()->compressed_data) {
-      /* ! / 3[!Q O1Gy O !! Y
+      /* ! / 3[!Q O1Gy O !! [
        * ! Data Type; Position without timestamp (no APRS messaging), or Ultimeter 2000 WX Station
        * / Table Identifier
        * 3[!Q Compressed Latitude
        * O1Gy Compressed Longitude
        * O Symbol Code
        * !! Compressed Course/Speed
-       * Y Compression Type, 00110000 options selected -> 00 not used, 1 curent fix, 11 NMEA Source RMC, 010 Software
+       * [ Compression Type, 00110000 options selected -> 00 not used, 1 curent fix, 11 NMEA Source RMC, 010 Software
        */
       aprsmsg = "!" + BeaconMan.getCurrentBeaconConfig()->overlay + compLat + compLng + BeaconMan.getCurrentBeaconConfig()->symbol + compCS + "[";
        
@@ -328,6 +328,14 @@ void loop() {
     //if (BatteryIsConnected) {
     //  aprsmsg += " -  _Bat.: " + batteryVoltage + "V - Cur.: " + batteryChargeCurrent + "mA";
     //}
+    if (BatteryIsConnected) {
+      if (BeaconMan.getCurrentBeaconConfig()->battery_voltage) {
+        aprsmsg += " "+batteryVoltage+"V";
+      }
+      if (BeaconMan.getCurrentBeaconConfig()->battery_current) {
+        aprsmsg += " "+batteryChargeCurrent+"mA";
+      }
+    }
 
 /*  No enhance precision
     if (BeaconMan.getCurrentBeaconConfig()->enhance_precision) {

@@ -26,7 +26,7 @@ public:
     };
 
 //  Beacon() : callsign("NOCALL-10"), path("WIDE1-1"), message("LoRa Tracker"), timeout(1), symbol("["), overlay("/"), enhance_precision(true) {
-    Beacon() : callsign("NOCALL-10"), path("WIDE1-1"), message("LoRa Tracker"), timeout(1), symbol("["), overlay("/"), compressed_data(true) {
+    Beacon() : callsign("NOCALL-10"), path("WIDE1-1"), message("LoRa Tracker"), timeout(1), symbol("["), overlay("/"), compressed_data(true), battery_voltage(false), battery_current(false) {
     }
 
     String       callsign;
@@ -37,6 +37,8 @@ public:
     String       overlay;
     Smart_Beacon smart_beacon;
     bool         compressed_data;
+    bool         battery_voltage;
+    bool         battery_current;
   //  bool         enhance_precision;
   };
 

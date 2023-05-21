@@ -64,6 +64,8 @@ Configuration ConfigurationManagement::readConfiguration() {
     beacon.smart_beacon.min_bcn     = v["smart_beacon"]["min_bcn"] | 5;
 
     beacon.compressed_data = v["compressed_data"] | false;
+    beacon.battery_voltage = v["battery_voltage"] | true;
+    beacon.battery_current = v["battery_current"] | true;
    // beacon.enhance_precision = v["enhance_precision"] | false;
 
     conf.beacons.push_back(beacon);
@@ -117,6 +119,8 @@ void ConfigurationManagement::writeConfiguration(Configuration conf) {
     v["smart_beacon"]["min_bcn"]     = beacon.smart_beacon.min_bcn;
 
     v["compressed_data"] = beacon.compressed_data;
+    v["battery_voltage"] = beacon.battery_voltage;
+    v["battery_current"] = beacon.battery_current;
    // v["enhance_precision"] = beacon.enhance_precision;
   }
 
