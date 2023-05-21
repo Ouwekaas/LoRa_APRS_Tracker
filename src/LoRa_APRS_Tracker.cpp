@@ -15,7 +15,7 @@
 
 #include "math.h"
 
-#define VERSION "22.19.0"
+#define VERSION "Beta 0.1.0"
 
 logging::Logger logger;
 
@@ -87,7 +87,9 @@ void setup() {
   logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "Main", "Version: " VERSION);
   setup_display();
 
-  show_display("OE5BPA", "LoRa APRS Tracker", "by Peter Buchegger", "Version: " VERSION, 2000);
+  //show_display("OE5BPA", "LoRa APRS Tracker", "by Peter Buchegger", "Version: " VERSION, 2000);
+
+  show_display("LoRa APRS", "T-Beam Tracker", "Version: " VERSION, 2000);
   load_config();
 
   setup_gps();
