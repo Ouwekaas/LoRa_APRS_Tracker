@@ -2,22 +2,19 @@
 
 This is a forked project, I want to experment a lot.
 
-Main goal: Shorten the data which is send out, currently is send a lot of data which take way to long in my opinium. SF12 is not meant to carry so much data.
+My main goal use compression on the location, speed and course data accouring the APRS documentation. Disable as much of data which I can miss, but made it optional in de config file for others.
+I succeeded this. From 108 bytes of data to short it to 30bytes of data. Instead of ~4,5 seconds airtime it is now ~1,5Seconds airtime.
 
-I want to go from the default 108 bytes like this:
+Orignal
 N0CALL-9>APLT00,WIDE1-1:!5633.47N/01503.44E[360/000/A=-00172LoRa Tracker -  _Bat.: 4.19V - Cur.: 395mA !wiT!
 
-Given the user the posiblity to go to 30 bytes of payload:
+After my editing
 N0CALL-9>APLT00:!/3[!QO1GyO!!Q
 
-Save you 72% transmition time. That is on SF12 less then ~1.2 seconds instead of ~4,5 seconds.
-At Spreadfactor 12 at a bandwidth of 125kHz is ~1.2 seconds instead of ~4,5 seconds airtime. This is hughe! 
-
-Secondary goals:
+My wish list:
 a. Updating the libraries and test them
 b. Some other features in the LCD screen, like QRA locator or coordinates, whould be choice, speed and direction as well.
-
-Please do not help with this project yet until I am finished and followed some courses how to react in a GitHub environment. You could enlighten me, PM me.
+c. Have a select knob so I can change icon from example car to tent or jogger, configurable in the json file.
 
 Vy Michel pe1pts.
 
