@@ -13,8 +13,8 @@ N0CALL-9>APLT00:!/3[!QO1GyO!!Q
 
 My wish list:
 a. Updating the libraries and test them
-b. Some other features in the LCD screen, like QRA locator or coordinates, whould be choice, speed and direction as well.
-c. Have a select knob so I can change icon from example car to tent or jogger, configurable in the json file.
+b. Some other features in the LCD screen, like QRA locator or coordinates, speed and direction as well.
+c. Have a select knob so I can change profiel from car to tent, jogger, sota, pota. Profiles should be configurable in the json file.
 
 Vy Michel pe1pts.
 
