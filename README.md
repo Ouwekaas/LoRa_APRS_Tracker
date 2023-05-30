@@ -5,28 +5,24 @@ This is a forked project, I want to experment a lot.
 My main goal use compression on the location, speed and course data accouring the APRS documentation. Disable as much of data which I can miss, but made it optional in de config file for others.
 I succeeded this. From 108 bytes of data to short it to 30bytes of data. Instead of ~4,5 seconds airtime it is now ~1,5Seconds airtime.
 
-Orignal:
-
+Orignal:</br>
 N0CALL-9>APLT00,WIDE1-1:!5633.47N/01503.44E[360/000/A=-00172LoRa Tracker -  _Bat.: 4.19V - Cur.: 395mA !wiT!
 
-After my editing:
-
+After my editing:</br>
 N0CALL-9>APLT00:!/3[!QO1GyO!!Q
 
-My wish list:
-
-a. Some other features in the LCD screen, like QRA locator or coordinates, speed and direction as well.
-
+My wish list:</br>
+a. Some other features in the LCD screen, like QRA locator or coordinates, speed and direction as well.</br>
 b. Have a select knob so I can change profiel from car to tent, jogger, sota, pota. Profiles should be configurable in the json file.
 
-Done:
-
+Done:</br>
 a. Libraries are up to date
 
+</br>
 
 Vy Michel pe1pts.
 
-
+</br></br></br>
 Here below the original text of the creator;
 
 
