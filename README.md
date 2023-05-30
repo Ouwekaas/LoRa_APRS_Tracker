@@ -14,9 +14,15 @@ After my editing:
 N0CALL-9>APLT00:!/3[!QO1GyO!!Q
 
 My wish list:
-a. Updating the libraries and test them
-b. Some other features in the LCD screen, like QRA locator or coordinates, speed and direction as well.
-c. Have a select knob so I can change profiel from car to tent, jogger, sota, pota. Profiles should be configurable in the json file.
+
+a. Some other features in the LCD screen, like QRA locator or coordinates, speed and direction as well.
+
+b. Have a select knob so I can change profiel from car to tent, jogger, sota, pota. Profiles should be configurable in the json file.
+
+Done:
+
+a. Libraries are up to date
+
 
 Vy Michel pe1pts.
 
