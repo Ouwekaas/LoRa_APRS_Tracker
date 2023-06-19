@@ -145,7 +145,7 @@ void loop() {
 
   if (gps_loc_update != gps_loc_update_valid) {
     gps_loc_update_valid = gps_loc_update;
-
+//TODO wtf is this, need to investigate, clogging up logging for what ?!?
     if (gps_loc_update) {
       logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "Loop", "GPS fix state went to VALID");
     } else {
